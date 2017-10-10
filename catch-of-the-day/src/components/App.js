@@ -6,20 +6,21 @@ import Fish from './Fish';
 import sampleFishes from '../sample-fishes';
 import base from '../base';
 
-//Vid 20
+//Vid 21
 class App extends React.Component {
   constructor() {
     super();
     this.addFish = this.addFish.bind(this);
     this.loadSamples = this.loadSamples.bind(this);
     this.addToOrder = this.addToOrder.bind(this);
+    this.updateFish = this.updateFish.bind(this);
     //initial state
     this.state = {
       fishes: {},
       order: {},
     };
   }
-
+  
   //Runs right before the app is rendered
   componentWillMount() {
     this.ref = base.syncState(`${this.props.params.storeId}/fishes`,
@@ -56,6 +57,11 @@ class App extends React.Component {
     // set state
     this.setState({ fishes })
   }
+  updateFish(key, updatedFish) {
+    const fishes = {...this.state.fishes};
+    fishes[key] = updatedFish;
+    this.setState({ fishes });
+  }
 
   loadSamples() {
     this.setState({
@@ -86,7 +92,7 @@ class App extends React.Component {
         order={this.state.order}
         params={this.props.params}
         />
-        <Inventory addFish={this.addFish} loadSamples={this.loadSamples}/>
+        <Inventory addFish={this.addFish} loadSamples={this.loadSamples} fishes={this.state.fishes} updateFish={this.updateFish}/>
       </div>
     )
   }
